@@ -22,7 +22,7 @@ function hexagon() {
 
 			levelNumber = d3.max(maxArray);
 
-			// 2. Draw hexagon and store points
+			// 2. Draw background hexagon and store points
 			for (var i = 0; i < levelNumber; i++) {
 				var points = computeHexagonPoints(width, height, (i + 1) * levelStep);
 				pointsArray.push(points);
@@ -35,12 +35,23 @@ function hexagon() {
 									});
 			};
 
-			// 3. Draw points circle
+			// 3. Draw points and area
 			dataArray.forEach(function(data, index) {
-				var circle = svg.selectAll("g").append("g")
+
+				// 3.1 Draw area
+				svg.append("polygon")
+					.attr({
+						"class": "area",
+						"points": function() { return computeAreaPoints(data); },
+						"fill": function(d, i) { return "rgb( .1, "+i+","+i+")"; },
+						"fill-opacity": ".5"
+					});
+
+				// 3.2 Draw points
+				var circle = svg.selectAll("g")
+								.append("g")
 								.data(data)
 								.enter()
-
 								.append("circle")
 								.attr({
 									"cx": function(d, i) { index = d -1;return pointsArray[index][i][0]; },
@@ -50,15 +61,6 @@ function hexagon() {
 									"stroke": "white",
 									"stroke-width": "2"
 								});
-
-				// 4. Draw area
-				svg.append("polygon")
-					.attr({
-						"class": "area",
-						"points": function() { return computeAreaPoints(data); },
-						"fill": function(d, i) { return "rgb( .1, "+i+","+i+")"; },
-						"fill-opacity": ".5"
-					});
 			});
 
 			// 5. Draw label
@@ -78,13 +80,27 @@ function hexagon() {
 			d3.selectAll(".area")
 				.on("mouseover", function() {
 					d3.select(this)
+						.transition()
 						.attr("fill", "red");
 				})
 				.on("mouseout", function() {
 					d3.select(this)
+						.transition()
 						.attr("fill", "blue")
 				});
 
+			d3.selectAll("circle")
+				.on("mouseover", function() {
+					d3.select(this)
+						.transition()
+						.ease("elastic")
+						.attr("r", "6");
+				})
+				.on("mouseout", function() {
+					d3.select(this)
+						.transition()
+						.attr("r", "4");
+				});
 		});
 	}
 
@@ -126,39 +142,39 @@ function hexagon() {
 		return pointsStr;
 	}
 
-	hexagon.width = function(value) {
+	hexagon.width = function(_) {
 		if (!arguments.length) return width;
-		width = value;
+		width = _;
 		return hexagon;
 	}
 
-	hexagon.height = function(value) {
+	hexagon.height = function(_) {
 		if (!arguments.length) return height;
-		height = value;
+		height = _;
 		return hexagon;
 	}
 
-	hexagon.level = function(value) {
+	hexagon.level = function(_) {
 		if (!arguments.length) return level;
-		level = value;
+		level = _;
 		return hexagon;
 	}
 
-	hexagon.levelStep = function(value) {
+	hexagon.levelStep = function(_) {
 		if (!arguments.length) return levelStep;
-		levelStep = value;
+		levelStep = _;
 		return hexagon;
 	}
 
-	hexagon.labels = function(value) {
+	hexagon.labels = function(_) {
 		if (!arguments.length) return labels;
-		labels = value;
+		labels = _;
 		return hexagon;
 	}
 
-	hexagon.dataArray = function(value) {
+	hexagon.dataArray = function(_) {
 		if (!arguments.length) return dataArray;
-		dataArray = value;
+		dataArray = _;
 		return hexagon;
 	}
 
