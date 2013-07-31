@@ -1,4 +1,6 @@
 d3-hexagon
 ==========
 
-A D3.js plugin for rendering Hexagon
+A D3.js plugin for rendering Hexagon.
+
+

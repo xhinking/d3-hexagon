@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script src="public/d3.v3.min.js"></script>
+	<script src="d3-hexagon.js"></script>
+</head>
+<style type="text/css">
+	.chart rect {
+	}
+</style>
+<body>
+
+<script type="text/javascript">
+
+var text = ["生命值", "魔法值", "力量", "敏捷", "攻击", "防御"];
+var data = [
+	[1, 5, 3, 4, 7, 6]
+];
+
+var svg = d3.select("body")
+				.append("svg")
+     			.attr({
+     				"class": "chart",
+     				"width": 800,
+     				"height": 800
+     			});
+
+var hexagon = hexagon()
+				.width(600)
+				.height(600)
+				.levelStep(30)
+				.labels(text);
+
+svg.datum(data).call(hexagon);
+
+
+</script>
+</body>
+</html>
