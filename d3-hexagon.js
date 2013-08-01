@@ -42,6 +42,14 @@ function hexagon() {
 				svg.append("polygon")
 					.attr({
 						"class": "area",
+						"points": function() { return computeHexagonString(pointsArray[0])},
+						"fill-opacity": "0"
+					})
+					.transition()
+					.delay(300)
+					.duration(700)
+					.ease("elastic")
+					.attr({
 						"points": function() { return computeAreaPoints(data); },
 						"fill": function(d, i) { return "rgb( .1, "+i+","+i+")"; },
 						"fill-opacity": ".5"
@@ -53,6 +61,18 @@ function hexagon() {
 								.data(data)
 								.enter()
 								.append("circle")
+								.attr({
+									"cx": width / 2,
+									"cy": height / 2,
+									"r": "4",
+									"fill": "#0282ef",
+									"stroke": "white",
+									"stroke-width": "2"
+								})
+								.transition()
+								.delay(300)
+								.duration(700)
+								.ease("elastic")
 								.attr({
 									"cx": function(d, i) { index = d -1;return pointsArray[index][i][0]; },
 									"cy": function(d, i) { index = d -1;return pointsArray[index][i][1]; },
